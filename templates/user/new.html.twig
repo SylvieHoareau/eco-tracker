@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouvel Utilisateur{% endblock %}
+
+{% block body %}
+    <h1>Créer un nouvel utilisateur</h1>
+
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+    {{ form_end(form) }}
+
+    <p>
+        <a href="{{ path('eco_list') }}">Retour à la liste</a>
+    </p>
+{% endblock %}
