@@ -12,6 +12,7 @@
 /public/bundles/
 /var/
 /vendor/
+assets/vendor/
 
 # Assets and user uploads
 /web/bundles/
