@@ -5,18 +5,34 @@ namespace App\Document;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[MongoDB\Document(collection: "users")] // Nom de la collection en base
+#[MongoDB\UniqueIndex(keys: ["email" => "asc"])] // Index MongoDB pour l'unicité
+#[MongoDB\UniqueIndex(keys: ["username" => "asc"])]
 class User
 {
     #[MongoDB\Id]
     private ?string $id = null;
 
     #[MongoDB\Field(type: "string")]
+    #[Assert\NotBlank(message: "Le nom d'utilisateur est obligatoire")]
+    #[Assert\Length(min: 3, max: 50)]
     private ?string $username = null;
 
     #[MongoDB\Field(type: "string")]
+    #[Assert\NotBlank]
+    #[Assert\Email(message: "L'email {{ value }} n'est pas un email valide")]
     private ?string $email = null;
+
+    #[MongoDB\Field(type: "string")]
+    private ?string $password = null;
+
+    #[MongoDB\Field(type: "collection")]
+    private array $roles = [];
 
     // RELATION : Un utilisateur peut avoir plusieurs EcoActions
     #[MongoDB\ReferenceMany(
@@ -33,6 +49,37 @@ class User
     {
         $this->actions = new ArrayCollection();
         $this->createdAt = new \DateTime();
+        $this->roles = ['ROLE_USER']; // Rôle par défaut
+    }
+
+    // --- Méthodes obligatoires pour la sécurité Symfony ---
+
+    public function getUserIdentifier(): string {
+        return (string) $this->email; // On se connecte avec l'email
+    }
+
+    public function getRoles(): array {
+        $roles = $this->roles;
+        $roles[] = 'ROLE_USER'; // Garantit que chaque utilisateur a au moins ce rôle
+        return array_unique($roles);
+    }
+
+    public function setRoles(array $roles): self {
+        $this->roles = $roles;
+        return $this;
+    }
+
+    public function getPassword(): ?string {
+        return $this->password;
+    }
+
+    public function setPassword(string $password): self {
+        $this->password = $password;
+        return $this;
+    }
+
+    public function eraseCredentials(): void {
+        // Utilisé pour effacer des données sensibles temporaires (si nécessaire)
     }
 
     // Getters / Setters
@@ -82,4 +129,6 @@ class User
         $this->createdAt = $createdAt; 
         return $this;
     }
+
+
 }

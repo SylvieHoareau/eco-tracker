@@ -50,6 +50,12 @@
                             {{ form_errors(form.email) }}
                         </div>
 
+                        <div class="mb-4">
+                            {{ form_label(form.password, 'Mot de passe', {'label_attr': {'class': 'form-label fw-bold'}}) }}
+                            {{ form_widget(form.password, {'attr': {'class': 'form-control form-control-lg'}}) }}
+                            {{ form_errors(form.password) }}
+                        </div>
+
                         <div class="d-grid mt-5 mb-5">
                             <button type="submit" class="btn btn-success btn-lg py-3 fw-bold shadow-sm">
                                 Créer mon profil

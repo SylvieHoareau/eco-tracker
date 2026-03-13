@@ -23,6 +23,13 @@ class EcoTrackerController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // HACHAGE DU MOT DE PASSE
+            $hashedPassword = $hasher->hashPassword(
+                $user,
+                $user->getPassword()
+            );
+            $user->setPassword($hashedPassword);
+
             // Le formulaire a rempli l'objet $user automatiquement
             $dm->persist($user);
             $dm->flush();
