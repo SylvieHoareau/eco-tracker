@@ -21,10 +21,6 @@ class UserType extends AbstractType
             ])
             ->add('email', EmailType::class, [
                 'label' => 'Adresse Email'
-            ])
-            ->add('save', SubmitType::class, [
-                'label' => 'Créer le compte',
-                'attr' => ['class' => 'btn btn-primary']
             ]);
     }
 
