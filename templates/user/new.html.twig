@@ -1,18 +1,66 @@
+{# templates/user/new.html.twig #}
 {% extends 'base.html.twig' %}
 
-{% block title %}Nouvel Utilisateur{% endblock %}
+{% block title %}Inscription - Nouvel Éco-Tracker{% endblock %}
 
 {% block body %}
-    <h1>Créer un nouvel utilisateur</h1>
+<main class="container my-4 my-md-5" id="main-content">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-8 col-lg-5">
+            
+            {# Navigation de retour accessible #}
+            <nav aria-label="Navigation secondaire" class="mb-4">
+                <a href="{{ path('eco_list') }}" class="text-success text-decoration-none">
+                    ← Retour à la liste des membres
+                </a>
+            </nav>
 
-    {{ form_start(form) }}
-        {{ form_widget(form) }}
-        <button class="btn btn-primary">Valider</button>
-    {{ form_end(form) }}
+            <div class="card shadow-sm border-2">
+                <div class="card-body p-4 p-md-5">
+                    <h1 class="h2 card-title mb-4 text-center">Rejoindre l'aventure 🌱</h1>
+                    
+                    <p class="text-muted text-center mb-4">Créez votre profil pour commencer à suivre vos économies de CO2.</p>
 
-    <a href="/user/{{ user.id }}/add-action">Ajouter une action</a>
+                    {{ form_start(form, {'attr': {'novalidate': 'novalidate', 'class': 'needs-validation'}}) }}
+                        
+                        {# Champ Nom d'utilisateur #}
+                        <div class="mb-4">
+                            {{ form_label(form.username, 'Nom d\'utilisateur', {'label_attr': {'class': 'form-label fw-bold'}}) }}
+                            {{ form_widget(form.username, {
+                                'attr': {
+                                    'class': 'form-control form-control-lg',
+                                    'placeholder': 'Ex: JeanVert99',
+                                    'autocomplete': 'username'
+                                }
+                            }) }}
+                            {{ form_errors(form.username) }}
+                        </div>
 
-    <p>
-        <a href="{{ path('eco_list') }}">Retour à la liste</a>
-    </p>
+                        {# Champ Email #}
+                        <div class="mb-4">
+                            {{ form_label(form.email, 'Adresse e-mail', {'label_attr': {'class': 'form-label fw-bold'}}) }}
+                            {{ form_widget(form.email, {
+                                'attr': {
+                                    'class': 'form-control form-control-lg',
+                                    'placeholder': 'votre@email.com',
+                                    'autocomplete': 'email'
+                                }
+                            }) }}
+                            <div class="form-text">Votre email reste strictement confidentiel.</div>
+                            {{ form_errors(form.email) }}
+                        </div>
+
+                        <div class="d-grid mt-5 mb-5">
+                            <button type="submit" class="btn btn-success btn-lg py-3 fw-bold shadow-sm">
+                                Créer mon profil
+                            </button>
+                        </div>
+
+                    {{ form_end(form) }}
+                </div>
+            </div>
+
+        </div>
+    </div>
+</main>
 {% endblock %}

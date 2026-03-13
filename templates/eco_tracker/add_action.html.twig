@@ -1,13 +1,66 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}Ajouter un geste - {{ user.username }}{% endblock %}
+
 {% block body %}
-    <h1>Ajouter une action pour {{ user.username }}</h1>
+<main class="container my-4 my-md-5" id="main-content">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-8 col-lg-6">
+            
+            {# Fil d'Ariane pour la navigation au clavier #}
+            <nav aria-label="Fil d'Ariane" class="mb-4">
+                <a href="{{ path('eco_list') }}" class="text-success text-decoration-none">
+                    ← Retour à la liste
+                </a>
+            </nav>
 
-    {{ form_start(form) }}
-        {{ form_widget(form) }}
-        <button class="btn btn-primary">Enregistrer l'éco-geste</button>
-    {{ form_end(form) }}
 
-    <br>
-    <a href="{{ path('eco_list') }}">Retour à la liste</a>
+            <div class="card shadow-sm border-2">
+                <div class="card-body p-4">
+                    <h1 class="h3 card-title mb-4">
+                        🌱 Nouveau geste pour <span class="text-success">{{ user.username }}</span>
+                    </h1>
+
+                    {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+                        
+                        {# On affiche les erreurs globales en haut #}
+                        <div class="text-danger mb-3">
+                            {{ form_errors(form) }}
+                        </div>
+
+                        {# Rendu champ par champ pour plus de contrôle #}
+                        <div class="mb-4">
+                            {{ form_label(form.title, 'Nom de l\'éco-geste', {'label_attr': {'class': 'form-label fw-bold'}}) }}
+                            {{ form_widget(form.title, {'attr': {
+                                'class': 'form-control form-control-lg', 
+                                'placeholder': 'Ex: Trajet en vélo',
+                                'aria-describedby': 'title-help'
+                            }}) }}
+                            <div id="title-help" class="form-text">Quel geste avez-vous accompli aujourd'hui ?</div>
+                            {{ form_errors(form.title) }}
+                        </div>
+
+                        <div class="mb-4">
+                            {{ form_label(form.carbonSaved, 'CO2 économisé (en grammes)', {'label_attr': {'class': 'form-label fw-bold'}}) }}
+                            {{ form_widget(form.carbonSaved, {'attr': {
+                                'class': 'form-control form-control-lg',
+                                'type': 'number',
+                                'min': '0'
+                            }}) }}
+                            {{ form_errors(form.carbonSaved) }}
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-success btn-lg py-3 shadow-sm">
+                                ✅ Enregistrer le geste
+                            </button>
+                        </div>
+
+                    {{ form_end(form) }}
+                </div>
+            </div>
+
+        </div>
+    </div>
+</main>
 {% endblock %}
