@@ -1,0 +1,22 @@
+{# templates/eco_tracker/list.html.twig #}
+{% for user in users %}
+    <h2>{{ user.username }}</h2>
+
+    <a href="{{ path('user_add_action', {'id': user.id }) }}">➕ Ajouter un geste éco</a>
+    
+    <ul>
+        {% for action in user.actions %}
+            <li>
+                {# On teste si c'est un objet (action.title) ou un tableau (action['title']) #}
+                {% if action.title is defined %}
+                    {{ action.title }} ({{ action.carbonSaved }}g)
+                {% else %}
+                    {# Si c'est un identifiant brut qui s'affiche, c'est que la relation est brisée #}
+                    Geste technique enregistré (ID: {{ action }})
+                {% endif %}
+            </li>
+        {% else %}
+            <li>Aucune action enregistrée.</li>
+        {% endfor %}
+    </ul>
+{% endfor %}

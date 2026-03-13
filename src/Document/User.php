@@ -21,7 +21,8 @@ class User
     // RELATION : Un utilisateur peut avoir plusieurs EcoActions
     #[MongoDB\ReferenceMany(
         targetDocument: EcoAction::class, 
-        cascade: ["persist", "remove"] // Permet de persister/supprimer les actions en même temps que l'utilisateur
+        cascade: ["all"], // Permet de persister/supprimer les actions en même temps que l'utilisateur
+        storeAs: "id"
     )]
     private Collection $actions;
 
@@ -31,16 +32,16 @@ class User
     public function __construct()
     {
         $this->actions = new ArrayCollection();
-        // $this->createdAt = new \DateTime(); // Date de création par défaut
+        $this->createdAt = new \DateTime();
     }
 
     // Getters / Setters
     public function getId(): ?string { 
-        return $this->id; 
+        return (string) $this->id; 
     }
 
     public function getUsername(): ?string { 
-        return $this->username; 
+        return (string) $this->username; 
     }
 
     public function setUsername(string $username): self { 
@@ -48,7 +49,7 @@ class User
     }
 
     public function getEmail(): ?string { 
-        return $this->email; 
+        return (string) $this->email; 
     }
 
     public function setEmail(string $email): self { 
@@ -60,8 +61,10 @@ class User
     }
 
     public function addAction(EcoAction $action): self
-    {        if (!$this->actions->contains($action)) {
+    {        
+        if (!$this->actions->contains($action)) {
             $this->actions->add($action);
+            $action->setUser($this); // Assure la relation inverse si tu as un champ "user" dans EcoAction
         }
         return $this;    
     }

@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Ajouter une action pour {{ user.username }}</h1>
+
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <button class="btn btn-primary">Enregistrer l'éco-geste</button>
+    {{ form_end(form) }}
+
+    <br>
+    <a href="{{ path('eco_list') }}">Retour à la liste</a>
+{% endblock %}
