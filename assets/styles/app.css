@@ -1,3 +1,66 @@
+:root {
+    /* Ta couleur beige actuelle plus douce */
+    --eco-bg: #fdf6e3; 
+    --eco-primary: #2d6a4f; /* Un vert forêt profond */
+    --eco-accent: #ffb703;  /* Un jaune chaud pour les boutons */
+    --card-radius: 16px;
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 body {
-    background-color: skyblue;
+    background-color: var(--eco-bg);
+    color: #1b4332;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    line-height: 1.6;
+}
+
+/* Custom Cards */
+.card {
+    border: none;
+    border-radius: var(--card-radius);
+    transition: var(--transition);
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(45, 106, 79, 0.1) !important;
+}
+
+/* Custom Inputs */
+.form-control {
+    border: 2px solid #e9ecef;
+    border-radius: 12px;
+    padding: 0.75rem 1.2rem;
+    transition: var(--transition);
+}
+
+.form-control:focus {
+    border-color: var(--eco-primary);
+    box-shadow: 0 0 0 0.25rem rgba(45, 106, 79, 0.15);
+}
+
+/* Titres plus élégants */
+h1, h2, h3 {
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--eco-primary);
+}
+
+/* Boutons avec effet de pression */
+.btn-success {
+    background-color: var(--eco-primary);
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    transition: var(--transition);
+}
+
+.btn-success:active {
+    transform: scale(0.96);
+}
+
+/* Micro-interaction pour les badges */
+.badge {
+    padding: 0.5em 1em;
+    font-weight: 500;
 }
