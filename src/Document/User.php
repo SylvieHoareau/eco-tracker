@@ -8,6 +8,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[MongoDB\Document(collection: "users")] // Nom de la collection en base
@@ -47,6 +48,8 @@ class User
 
     public function __construct()
     {
+        // On génère l'UUID à la création de l'objet
+        $this->id = Uuid::v4()->toRfc4122();
         $this->actions = new ArrayCollection();
         $this->createdAt = new \DateTime();
         $this->roles = ['ROLE_USER']; // Rôle par défaut

@@ -3,6 +3,7 @@
 namespace App\Document;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
+use Symfony\Component\Uid\Uuid;
 
 #[MongoDB\Document]
 class EcoAction
@@ -18,6 +19,12 @@ class EcoAction
 
     #[MongoDB\ReferenceOne(targetDocument: User::class, inversedBy: "actions")]
     private ?User $user = null;
+
+    public function __construct()
+    {
+        // Génération automatique d'un identifiant unique
+        $this->id = Uuid::v4()->toRfc4122();
+    }
 
     // Getters et Setters...
     public function getId(): ?string { 
