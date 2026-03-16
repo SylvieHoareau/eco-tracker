@@ -1,53 +1,120 @@
+{% extends 'base.html.twig' %}
+
 {% block stylesheets %}
+    {{ parent() }} {# Conserve Bootstrap #}
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
-        #map { height: 600px; width: 100%; border-radius: 10px; }
-    </style>
+        /* Conteneur de la carte : Mobile First */
+        #map { 
+            height: 50vh; /* 50% de la hauteur de l'écran sur mobile */
+            min-height: 350px;
+            width: 100%; 
+            border-radius: 12px;
+            border: 2px solid #e0e0e0;
+            z-index: 1; /* Évite les conflits avec la navbar */
+        }
+
+        /* Ajustement pour les écrans plus grands (Tablettes/PC) */
+        @media (min-width: 768px) {
+            #map { 
+                height: 70vh; /* Plus grand sur desktop */
+            }
+        }
+
+        /* Amélioration de la lisibilité des popups (Accessibilité) */
+        .leaflet-popup-content {
+            font-size: 1rem;
+            line-height: 1.5;
+            color: #2c3e50;
+        }
+        
+        /* Focus visible pour la navigation au clavier */
+        #map:focus {
+            outline: 3px solid #2ecc71;
+            outline-offset: 2px;
+        }    </style>
 {% endblock %}
 
 {% block body %}
-    <div class="container mt-4">
-        <h1>🗺️ Observatoire de La Réunion</h1>
-        <div id="map"></div>
+    <div class="container mt-4 mb-5">
+        <header class="mb-4 text-center">
+            <h1 class="h2 fw-bold text-success">
+                <span aria-hidden="true">🗺️</span> 
+                Observatoire Territorial de La Réunion
+            </h1>
+            <p class="text-muted">
+                Visualisez l'impact écologique par commune. 
+                Utilisez les touches fléchées pour naviguer sur la carte.
+            </p>
+        </header>
+
+        {# Ajout d'un rôle "application" et d'un label pour l'accessibilité #}
+        <section id="map-container" aria-label="Carte interactive des communes de La Réunion">
+            <div id="map" role="application" aria-roledescription="map" tabindex="0"></div>
+        </section>
+
+        {# Une alternative textuelle cachée pour les lecteurs d'écran #}
+        <div class="visually-hidden">
+            Cette carte interactive montre le nombre d'éco-gestes par commune. 
+            Les communes les plus actives sont en vert foncé.
+        </div>
     </div>
 {% endblock %}
 
 {% block javascripts %}
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-        // Initialisation de la carte
-        const map = L.map('map').setView([-21.1151, 55.5364], 10);
+        // On attend que le document soit prêt
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialisation de la carte
+            const map = L.map('map').setView([-21.1151, 55.5364], 10);
 
-        // Fond de carte OpenStreetMap
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '© OpenStreetMap contributors'
-        }).addTo(map);
+            // Fond de carte OpenStreetMap
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(map);
 
-        // Injection du GeoJSON récupéré par le contrôleur
-        const geojsonData = {{ communes_geojson|raw }};
-        const statsCommunes = {{ stats_communes|raw }}; // Récupération des stats
+            // Injection du GeoJSON récupéré par le contrôleur
+            const geojsonData = {{ communes_geojson|raw }};
+            const statsCommunes = {{ stats_communes|raw }}; // Récupération des stats
 
-        L.geoJSON(geojsonData, {
-            style: function(feature) {
-                // Optionnel : colorer plus foncé si beaucoup de gestes
-                const nbGestes = statsCommunes[feature.properties.nom] || 0;
-                return {
-                    color: "#2ecc71",
-                    weight: 2,
-                    fillOpacity: nbGestes > 0 ? 0.5 : 0.1, // Plus opaque si actif
-                    fillColor: nbGestes > 10 ? "#1e8449" : "#2ecc71" 
-                };
-            },
-            onEachFeature: function (feature, layer) {
-                // Personnalisation du Popup
-                const nom = feature.properties.nom;
-                const totalGestes = statsCommunes[nom] || 0;
-                
-                layer.bindPopup(
-                    "<strong>Commune : " + nom + "</strong><br>" +
-                    "🌱 Éco-gestes enregistrés : " + totalGestes
-                );
-            }
-        }).addTo(map);
+            L.geoJSON(geojsonData, {
+                style: function(feature) {
+                    // Optionnel : colorer plus foncé si beaucoup de gestes
+                    const nbGestes = statsCommunes[feature.properties.nom] || 0;
+                    return {
+                        color: "#1e8449",
+                        weight: 2,
+                        fillOpacity: nbGestes > 0 ? 0.5 : 0.1, // Plus opaque si actif
+                        fillColor: nbGestes > 10 ? "#1e8449" : "#2ecc71" 
+                    };
+                },
+                onEachFeature: function (feature, layer) {
+                    // Personnalisation du Popup
+                    const nom = feature.properties.nom;
+                    const totalGestes = statsCommunes[nom] || 0;
+
+                    // Structure de popup plus accessible
+                    const popupContent = `
+                        <article>
+                            <h2 style="font-size: 1.1rem; margin-bottom: 5px;">${nom}</h2>
+                            <p style="margin: 0;">
+                                <strong>🌱 Engagement :</strong> ${totalGestes} geste${totalGestes > 1 ? 's' : ''}
+                            </p>
+                        </article>
+                    `;
+                    
+                    layer.bindPopup(popupContent, {
+                        closeButton: true,
+                        className: 'custom-accessible-popup'
+                    });
+
+                    // Accessibilité : Ouvrir le popup quand on navigue au clavier (focus)
+                    layer.on('focus', function() {
+                        this.openPopup();
+                    });
+                }
+            }).addTo(map);
+        });
     </script>
 {% endblock %}
