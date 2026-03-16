@@ -25,15 +25,28 @@
 
         // Injection du GeoJSON récupéré par le contrôleur
         const geojsonData = {{ communes_geojson|raw }};
+        const statsCommunes = {{ stats_communes|raw }}; // Récupération des stats
 
         L.geoJSON(geojsonData, {
-            style: {
-                color: "#2ecc71", // Vert
-                weight: 2,
-                fillOpacity: 0.2
+            style: function(feature) {
+                // Optionnel : colorer plus foncé si beaucoup de gestes
+                const nbGestes = statsCommunes[feature.properties.nom] || 0;
+                return {
+                    color: "#2ecc71",
+                    weight: 2,
+                    fillOpacity: nbGestes > 0 ? 0.5 : 0.1, // Plus opaque si actif
+                    fillColor: nbGestes > 10 ? "#1e8449" : "#2ecc71" 
+                };
             },
             onEachFeature: function (feature, layer) {
-                layer.bindPopup("<strong>" + feature.properties.nom + "</strong>");
+                // Personnalisation du Popup
+                const nom = feature.properties.nom;
+                const totalGestes = statsCommunes[nom] || 0;
+                
+                layer.bindPopup(
+                    "<strong>Commune : " + nom + "</strong><br>" +
+                    "🌱 Éco-gestes enregistrés : " + totalGestes
+                );
             }
         }).addTo(map);
     </script>

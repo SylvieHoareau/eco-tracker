@@ -8,7 +8,7 @@ use Symfony\Component\Uid\Uuid;
 #[MongoDB\Document]
 class EcoAction
 {
-    #[MongoDB\Id]
+    #[MongoDB\Id(strategy: "NONE")]
     private ?string $id = null;
 
     #[MongoDB\Field(type: "string")]

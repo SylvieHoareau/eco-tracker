@@ -129,6 +129,19 @@ class EcoTrackerController extends AbstractController
     {
         $users = $dm->getRepository(User::class)->findAll();
 
+        // On calcule le nombre de gestes par commune
+        $statsCommunes = [];
+        foreach ($users as $user) {
+            $nomCommune = $user->getCommune();
+            if ($nomCommune) {
+                if (!isset($statsCommunes[$nomCommune])) {
+                    $statsCommunes[$nomCommune] = 0;
+                }
+                // On ajoute le nombre d'actions de cet utilisateur au total de la commune
+                $statsCommunes[$nomCommune] += count($user->getActions());
+            }
+        }
+
         // On récupère les contours des communes du 974 via Etalab (Source OSM/IGN)
         $response = $httpClient->request(
             'GET',
@@ -140,6 +153,7 @@ class EcoTrackerController extends AbstractController
         return $this->render('map/index.html.twig', [
             'users' => $users,
             'communes_geojson' => $communesGeoJson,
+            'stats_communes' => json_encode($statsCommunes)
         ]);
     }
 }

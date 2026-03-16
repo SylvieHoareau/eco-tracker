@@ -11,10 +11,17 @@
             <article class="col">
                 <div class="card h-100 shadow-sm">
                     <header class="card-header bg-success text-white d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">{{ user.username }}</h5>
-                        <span class="badge bg-light text-dark" aria-label="{{ user.actions|length }} gestes effectués">
-                            {{ user.actions|length }} gestes
-                        </span>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">{{ user.username }}</h5>
+                            <span class="badge bg-light text-dark" aria-label="{{ user.actions|length }} gestes effectués">
+                                {{ user.actions|length }} gestes
+                            </span>
+                        </div>
+                        {% if user.commune %}
+                            <div class="small mt-1 text-white-50">
+                                <span aria-hidden="true">📍</span> {{ user.commune }}
+                            </div>
+                        {% endif %}
                     </header>
             
                     <div class="card-body">
