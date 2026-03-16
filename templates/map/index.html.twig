@@ -1,0 +1,40 @@
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        #map { height: 600px; width: 100%; border-radius: 10px; }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h1>🗺️ Observatoire de La Réunion</h1>
+        <div id="map"></div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // Initialisation de la carte
+        const map = L.map('map').setView([-21.1151, 55.5364], 10);
+
+        // Fond de carte OpenStreetMap
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        // Injection du GeoJSON récupéré par le contrôleur
+        const geojsonData = {{ communes_geojson|raw }};
+
+        L.geoJSON(geojsonData, {
+            style: {
+                color: "#2ecc71", // Vert
+                weight: 2,
+                fillOpacity: 0.2
+            },
+            onEachFeature: function (feature, layer) {
+                layer.bindPopup("<strong>" + feature.properties.nom + "</strong>");
+            }
+        }).addTo(map);
+    </script>
+{% endblock %}

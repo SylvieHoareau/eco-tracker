@@ -43,6 +43,10 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
     )]
     private Collection $actions;
 
+    #[MongoDB\Field(type: "string")]
+    #[Assert\NotBlank(message: "Veuillez sélectionner votre commune")]
+    private ?string $commune = null;
+
     #[MongoDB\Field(type: "date")]
     private ?\DateTimeInterface $createdAt = null;
 
@@ -124,14 +128,25 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
         return $this;    
     }
 
+
+
     public function getCreatedAt(): ?\DateTimeInterface { 
         return $this->createdAt; 
+    }
+
+    public function getCommune(): ?string { 
+        return $this->commune; 
+    }
+
+    public function setCommune(?string $commune): self { 
+        $this->commune = $commune; return $this; 
     }
 
     public function setCreatedAt(\DateTimeInterface $createdAt): self { 
         $this->createdAt = $createdAt; 
         return $this;
     }
+
 
 
 }

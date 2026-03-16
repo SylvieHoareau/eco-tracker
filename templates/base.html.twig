@@ -52,6 +52,11 @@
                                 🚀 Rejoindre
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ app.request.get('_route') == 'app_map' ? 'active' : '' }}" href="{{ path('app_map') }}">
+                                🗺️ Carte Impact
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>

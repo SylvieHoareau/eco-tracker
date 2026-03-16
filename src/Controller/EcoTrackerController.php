@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class EcoTrackerController extends AbstractController
 {
@@ -121,5 +122,24 @@ class EcoTrackerController extends AbstractController
             'users' => $users,
         ]);
 
+    }
+
+    #[Route('/observatoire/carte', name: 'app_map')]
+    public function showMap(DocumentManager $dm, HttpClientInterface $httpClient): Response
+    {
+        $users = $dm->getRepository(User::class)->findAll();
+
+        // On récupère les contours des communes du 974 via Etalab (Source OSM/IGN)
+        $response = $httpClient->request(
+            'GET',
+            'https://geo.api.gouv.fr/departements/974/communes?format=geojson&geometry=contour'
+        );
+        
+        $communesGeoJson = $response->getContent();
+
+        return $this->render('map/index.html.twig', [
+            'users' => $users,
+            'communes_geojson' => $communesGeoJson,
+        ]);
     }
 }
