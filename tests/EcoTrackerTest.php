@@ -24,16 +24,20 @@ class EcoTrackerTest extends WebTestCase
     {
         $client = static::createClient();
         $crawler = $client->request('GET', '/user/new');
+        $randomEmail = 'test' . uniqid() . '@eco.com';
 
         // On remplit le formulaire avec des données de test
         $buttonCrawlerNode = $crawler->selectButton('Créer mon profil');
         $form = $buttonCrawlerNode->form([
             'user[username]' => 'TesteurBio',
-            'user[email]'    => 'test@eco.com',
+            'user[email]'    => $randomEmail,
             'user[password]' => 'Password123!',
         ]);
 
         $client->submit($form);
+
+        // Ajoute ceci pour débugger :
+        file_put_contents('debug.html', $client->getResponse()->getContent());
 
         // Après soumission, on doit être redirigé vers la liste
         $this->assertResponseRedirects('/eco/list');

@@ -5,18 +5,18 @@ namespace App\Document;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[MongoDB\Document(collection: "users")] // Nom de la collection en base
 #[MongoDB\UniqueIndex(keys: ["email" => "asc"])] // Index MongoDB pour l'unicité
 #[MongoDB\UniqueIndex(keys: ["username" => "asc"])]
-class User
+class User implements PasswordAuthenticatedUserInterface, UserInterface
 {
-    #[MongoDB\Id]
+    #[MongoDB\Id(strategy: "NONE", type: "string")]
     private ?string $id = null;
 
     #[MongoDB\Field(type: "string")]
