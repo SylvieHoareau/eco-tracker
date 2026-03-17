@@ -1,0 +1,69 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon Profil - EcoTracker{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h1 class="h4 mb-0">👤 Mes informations personnelles</h1>
+                </div>
+                <div class="card-body">
+                    <table class="table table-borderless">
+                        <tr>
+                            <th class="ps-0">Nom d'utilisateur :</th>
+                            <td>{{ user.username }}</td>
+                        </tr>
+                        <tr>
+                            <th class="ps-0">Email :</th>
+                            <td>{{ user.email }}</td>
+                        </tr>
+                        <tr>
+                            <th class="ps-0">Commune :</th>
+                            <td>{{ user.commune ?: 'Non renseignée' }}</td>
+                        </tr>
+                        <tr>
+                            <th class="ps-0">Membre depuis le :</th>
+                            <td>{{ user.createdAt|date('d/m/Y') }}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card shadow-sm">
+                <div class="card-header bg-success text-white">
+                    <h2 class="h5 mb-0">🍃 Mon Impact Écologique</h2>
+                </div>
+                <div class="card-body text-center">
+                    <p class="display-6 fw-bold text-success">{{ total_carbon / 1000 }} kg</p>
+                    <p class="text-muted">de CO2 économisés au total</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card border-danger shadow-sm">
+                <div class="card-header bg-danger text-white">
+                    <h2 class="h5 mb-0">⚙️ Paramètres & RGPD</h2>
+                </div>
+                <div class="card-body">
+                    <p class="small text-muted">
+                        Conformément au RGPD, vous disposez d'un droit à l'effacement de vos données.
+                    </p>
+                    
+                    <hr>
+
+                    <form action="{{ path('user_delete_confirm') }}" method="POST" 
+                          onsubmit="return confirm('Attention : Cette action supprimera définitivement votre compte et vos {{ user.actions|length }} éco-gestes. Continuer ?');">
+                        <button type="submit" class="btn btn-outline-danger w-100">
+                            🗑️ Supprimer mon compte
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

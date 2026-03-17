@@ -38,7 +38,7 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
     // RELATION : Un utilisateur peut avoir plusieurs EcoActions
     #[MongoDB\ReferenceMany(
         targetDocument: EcoAction::class, 
-        cascade: ["all"], // Permet de persister/supprimer les actions en même temps que l'utilisateur
+        cascade: ["all", "remove"], // Permet de persister/supprimer les actions en même temps que l'utilisateur
         storeAs: "id"
     )]
     private Collection $actions;

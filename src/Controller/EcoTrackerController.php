@@ -88,6 +88,51 @@ class EcoTrackerController extends AbstractController
         ]);
     }
 
+    #[Route('/user/delete-confirm', name: 'user_delete_confirm')]
+    public function deleteAccount(DocumentManager $dm, Request $request): Response
+    {
+        /** @var User $user */
+        $user = $this->getUser(); // Récupère l'utilisateur actuellement connecté
+
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        // On supprime l'utilisateur (et ses actions grâce au cascade="remove")
+        $dm->remove($user);
+        $dm->flush();
+
+        // On invalide la session pour déconnecter l'utilisateur après suppression
+        $request->getSession()->invalidate();
+        $this->container->get('security.token_storage')->setToken(null);
+
+        $this->addFlash('success', 'Votre compte et toutes vos données ont été définitivement supprimés.');
+
+        return $this->redirectToRoute('eco_list');
+    }
+
+    #[Route('/me', name: 'app_profile')]
+    public function profile(): Response
+    {
+        // Récupère l'utilisateur connecté (via le security bundle de Symfony)
+        $user = $this->getUser();
+
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        // Calcul du total de carbone sauvé par cet utilisateur
+        $totalCarbon = 0;
+        foreach ($user->getActions() as $action) {
+            $totalCarbon += $action->getCarbonSaved();
+        }
+
+        return $this->render('user/profile.html.twig', [
+            'user' => $user,
+            'total_carbon' => $totalCarbon
+        ]);
+    }
+
     #[Route('/eco/add', name: 'eco_add')]
     public function add(DocumentManager $dm): Response
     {
