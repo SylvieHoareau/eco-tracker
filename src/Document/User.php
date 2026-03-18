@@ -128,12 +128,6 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
         return $this;    
     }
 
-
-
-    public function getCreatedAt(): ?\DateTimeInterface { 
-        return $this->createdAt; 
-    }
-
     public function getCommune(): ?string { 
         return $this->commune; 
     }
@@ -142,11 +136,13 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
         $this->commune = $commune; return $this; 
     }
 
+    public function getCreatedAt(): ?\DateTimeInterface { 
+        return $this->createdAt; 
+    }
+
     public function setCreatedAt(\DateTimeInterface $createdAt): self { 
         $this->createdAt = $createdAt; 
         return $this;
     }
-
-
 
 }

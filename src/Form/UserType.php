@@ -44,6 +44,7 @@ class UserType extends AbstractType
             'Le Tampon' => 'Le Tampon',
             'Les Trois-Bassins' => 'Les Trois-Bassins',
         ];
+        asort($communes); // Tri alphabétique sur les valeurs
 
         $builder
             ->add('username', TextType::class, [
@@ -70,7 +71,7 @@ class UserType extends AbstractType
                 'choices' => $communes,
                 'placeholder' => 'Choisissez votre commune',
                 'label' => 'Votre commune de résidence',
-                'attr' => ['class' => 'form-select'] // Classe Bootstrap
+                'attr' => ['class' => 'form-select form-control-lg'] // Classe Bootstrap
             ]);
     }
 

@@ -1,0 +1,36 @@
+{# templates/home/index.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Bienvenue sur EcoTracker{% endblock %}
+
+{% block body %}
+<div class="p-5 mb-4 bg-light rounded-3 shadow-sm mt-5">
+    <div class="container-fluid py-5 text-center">
+        <h1 class="display-5 fw-bold">🌱 Suivez votre impact avec EcoTracker</h1>
+        <p class="col-md-12 fs-4 mt-3">
+            Rejoignez notre communauté de la Réunion et commencez à enregistrer vos éco-gestes pour réduire votre empreinte carbone.
+        </p>
+        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-4">
+            <a href="{{ path('user_new') }}" class="btn btn-primary btn-lg px-4 gap-3">Créer un compte</a>
+            <a href="{{ path('app_login') }}" class="btn btn-outline-secondary btn-lg px-4">Se connecter</a>
+        </div>
+    </div>
+</div>
+
+<div class="row align-items-md-stretch text-center">
+    <div class="col-md-6">
+        <div class="h-100 p-5 border rounded-3">
+            <h2>🗺️ Carte Impact</h2>
+            <p>Visualisez les efforts de la communauté sur toute l'île.</p>
+            <a href="{{ path('app_map') }}" class="btn btn-outline-success">Voir la carte</a>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="h-100 p-5 border rounded-3">
+            <h2>👥 Communauté</h2>
+            <p>Découvrez qui participe déjà à l'aventure EcoTracker.</p>
+            <a href="{{ path('eco_list') }}" class="btn btn-outline-info">Voir la liste</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
