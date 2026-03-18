@@ -54,9 +54,9 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
     {
         // On génère l'UUID à la création de l'objet
         $this->id = Uuid::v4()->toRfc4122();
-        $this->actions = new ArrayCollection();
-        $this->createdAt = new \DateTime();
         $this->roles = ['ROLE_USER']; // Rôle par défaut
+        $this->createdAt = new \DateTime();
+        $this->actions = new ArrayCollection();
     }
 
     // --- Méthodes obligatoires pour la sécurité Symfony ---
