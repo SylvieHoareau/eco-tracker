@@ -29,13 +29,10 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Configurer les variables d'environnement pour Symfony
 ENV APP_ENV=prod
 ENV APP_RUNTIME_ENV=prod
-ENV MONGODB_URI=mongodb://localhost:27017
-ENV MONGODB_DB=eco_tracker
 
-# Créer un fichier .env avec les variables d'environnement nécessaires
-RUN echo "APP_ENV=prod" > .env
-RUN echo "MONGODB_URI=${MONGODB_URI}" >> .env
-RUN echo "MONGODB_DB=${MONGODB_DB}" >> .env
+ARG MONGODB_URI="mongodb://localhost:27017"
+ENV MONGODB_URI=${MONGODB_URI}
+ENV MONGODB_DB="eco_tracker"
 
 # Installer les dépendances de production avec Composer
 RUN composer install --no-dev --optimize-autoloader
