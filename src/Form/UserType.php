@@ -72,6 +72,11 @@ class UserType extends AbstractType
                 'placeholder' => 'Choisissez votre commune',
                 'label' => 'Votre commune de résidence',
                 'attr' => ['class' => 'form-select form-control-lg'] // Classe Bootstrap
+            ])
+            ->add('actions', CollectionType::class, [
+                'entry_type' => EcoActionType::class,
+                'allow_add' => true,
+                'by_reference' => false, // OBLIGATOIRE pour que Symfony appelle addAction()
             ]);
     }
 

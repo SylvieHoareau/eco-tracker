@@ -36,8 +36,14 @@ class EcoTrackerController extends AbstractController
             $user->setPassword($hashedPassword);
 
             // Le formulaire a rempli l'objet $user automatiquement
-            $dm->persist($user);
-            $dm->flush();
+            try {
+                $dm->persist($user);
+                $dm->flush();
+            } catch (\Exception $e) {
+                // Cela affichera l'erreur réelle dans les logs de Render
+                error_log($e->getMessage());
+                throw $e; 
+            }
 
             $this->addFlash('success', 'Utilisateur créé avec succès !');
 
