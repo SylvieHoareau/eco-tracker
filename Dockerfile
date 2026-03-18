@@ -3,7 +3,13 @@ FROM php:8.2-apache
 
 # Installer les dépendances système et l'extension MongoDB
 RUN apt-get update && apt-get install -y \
-    libzip-dev zip unzip libpng-dev libicu-dev \
+    libzip-dev \
+    zip \
+    unzip \
+    libpng-dev \
+    libicu-dev \
+    libssl-dev \
+    pkg-config \
     && pecl install mongodb \
     && docker-php-ext-enable mongodb \
     && docker-php-ext-install zip gd intl opcache
