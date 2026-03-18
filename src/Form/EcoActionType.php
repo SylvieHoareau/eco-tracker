@@ -14,9 +14,17 @@ class EcoActionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('title', TextType::class, ['label' => 'Nom de l\'action'])
-            ->add('carbonSaved', IntegerType::class, ['label' => 'CO2 économisé (g)'])
-            // On ne met pas le champ "user" ici, on le gérera dans le contrôleur
+            ->add('title', TextType::class, [
+                'label' => 'Nom de l\'action',
+                'constraints' => [new NotBlank(['message' => 'Le titre est requis'])]
+            ])
+            ->add('carbonSaved', IntegerType::class, [
+                'label' => 'CO2 économisé (g)',
+                'constraints' => [
+                    new NotBlank(),
+                    new Positive(['message' => 'La valeur doit être supérieure à 0'])
+                ]
+            ])
         ;
     }
 }
