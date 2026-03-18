@@ -19,6 +19,10 @@ WORKDIR /var/www/html
 
 # 5. Installer Composer et les dépendances
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+ENV APP_RUNTIME_ENV=prod
+ENV APP_ENV=prod
+
 RUN composer install --no-dev --optimize-autoloader
 
 # 6. Compiler les assets
