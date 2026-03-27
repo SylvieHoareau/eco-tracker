@@ -26,8 +26,7 @@
                         </tr>
                         <tr>
                             <th class="ps-0">Membre depuis le :</th>
-                            <td>{{ user.createdAt|date('d/m/Y') }}</td>
-                        </tr>
+                            <td>{{ user.createdAt ? user.createdAt|date('d/m/Y') : 'Date inconnue' }}</td>                        </tr>
                     </table>
                 </div>
             </div>

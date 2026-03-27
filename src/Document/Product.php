@@ -17,7 +17,7 @@ class Product
     public function __construct()
     {
         // Génération automatique d'un identifiant unique
-        $this->id = Uuid::v4()->toRfc4122();
+        // $this->id = Uuid::v4()->toRfc4122();
     }
 
     // Getters et Setters...

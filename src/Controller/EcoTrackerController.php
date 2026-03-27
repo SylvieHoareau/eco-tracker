@@ -39,15 +39,14 @@ class EcoTrackerController extends AbstractController
             try {
                 $dm->persist($user);
                 $dm->flush();
+
+                $this->addFlash('success', 'Utilisateur créé avec succès !');
+                // 3. Redirection vers la liste
+                return $this->redirectToRoute('eco_list');
             } catch (\Exception $e) {
-                // Cela affichera l'erreur réelle dans les logs de Render
-                error_log($e->getMessage());
-                throw $e; 
+                $this->addFlash('danger', 'Erreur lors de la sauvegarde : ' . $e->getMessage());
+                return $this->redirectToRoute('user_new');
             }
-
-            $this->addFlash('success', 'Utilisateur créé avec succès !');
-
-            return $this->redirectToRoute('eco_list');
         }
 
         return $this->render('user/new.html.twig', [
@@ -56,7 +55,7 @@ class EcoTrackerController extends AbstractController
         ]);
     } 
 
-    #[Route('/user/{id}/add-action', name: 'user_add_action', requirements: ['id' => '[a-f0-9-]{36}'])]
+    #[Route('/user/{id}/add-action', name: 'user_add_action', requirements: ['id' => '[a-f0-9-]{24}'])]
     public function addAction(
         string $id, 
         Request $request, 
@@ -129,6 +128,8 @@ class EcoTrackerController extends AbstractController
 
         // Calcul du total de carbone sauvé par cet utilisateur
         $totalCarbon = 0;
+        // Sécurité : Vérifie si getActions() ne renvoie pas null
+        $actions = $user->getActions() ?? [];
         foreach ($user->getActions() as $action) {
             $totalCarbon += $action->getCarbonSaved();
         }
@@ -188,8 +189,10 @@ class EcoTrackerController extends AbstractController
                 if (!isset($statsCommunes[$nomCommune])) {
                     $statsCommunes[$nomCommune] = 0;
                 }
+                // Utilise count() de manière sécurisée
+                $actions = $user->getActions();
                 // On ajoute le nombre d'actions de cet utilisateur au total de la commune
-                $statsCommunes[$nomCommune] += count($user->getActions());
+                $statsCommunes[$nomCommune] += ($actions !== null) ? count($actions) : 0;            
             }
         }
 

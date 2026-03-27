@@ -23,6 +23,16 @@
 
                     {{ form_start(form, {'attr': {'novalidate': 'novalidate', 'class': 'needs-validation'}}) }}
                         
+                        {# --- DEBOGAGE --- #}
+                        {% if not form.vars.valid %}
+                            <div class="alert alert-danger">
+                                <strong>Oups !</strong> Il y a des erreurs dans le formulaire :
+                                {{ form_errors(form) }}
+                            </div>
+                        {% endif %}
+                        {# -------------------------- #}
+
+
                         {# Champ Nom d'utilisateur #}
                         <div class="mb-4">
                             {{ form_label(form.username, 'Nom d\'utilisateur', {'label_attr': {'class': 'form-label fw-bold'}}) }}

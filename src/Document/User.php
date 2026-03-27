@@ -16,7 +16,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[MongoDB\UniqueIndex(keys: ["username" => "asc"])]
 class User implements PasswordAuthenticatedUserInterface, UserInterface
 {
-    #[MongoDB\Id(strategy: "NONE", type: "string")]
+    #[MongoDB\Id]
     private ?string $id = null;
 
     #[MongoDB\Field(type: "string")]
@@ -53,10 +53,10 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
     public function __construct()
     {
         // On génère l'UUID à la création de l'objet
-        $this->id = Uuid::v4()->toRfc4122();
+        // $this->id = Uuid::v4()->toRfc4122();
         $this->roles = ['ROLE_USER']; // Rôle par défaut
-        $this->createdAt = new \DateTime();
         $this->actions = new ArrayCollection();
+        $this->createdAt = new \DateTime();
     }
 
     // --- Méthodes obligatoires pour la sécurité Symfony ---

@@ -8,7 +8,7 @@ use Symfony\Component\Uid\Uuid;
 #[MongoDB\Document]
 class EcoAction
 {
-    #[MongoDB\Id(strategy: "NONE")]
+    #[MongoDB\Id]
     private ?string $id = null;
 
     #[MongoDB\Field(type: "string")]
@@ -23,7 +23,7 @@ class EcoAction
     public function __construct()
     {
         // Génération automatique d'un identifiant unique
-        $this->id = Uuid::v4()->toRfc4122();
+        // $this->id = Uuid::v4()->toRfc4122();
     }
 
     // Getters et Setters...

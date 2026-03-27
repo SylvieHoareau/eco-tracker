@@ -1,0 +1,40 @@
+<?php
+
+namespace App\Command;
+
+use App\DataFixtures\AppFixtures;
+use Doctrine\ODM\MongoDB\DocumentManager;
+use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
+
+#[AsCommand(
+    name: 'app:fixtures:load',
+    description: 'Charge les données de test dans MongoDB',
+)]
+class LoadFixturesCommand extends Command
+{
+    public function __construct(
+        private DocumentManager $documentManager,
+    ) {
+        parent::__construct();
+    }
+
+    protected function execute(InputInterface $input, OutputInterface $output): int
+    {
+        $io = new SymfonyStyle($input, $output);
+        
+        try {
+            $fixtures = new AppFixtures();
+            $fixtures->load($this->documentManager);
+            
+            $io->success('Fixtures chargées avec succès !');
+            return Command::SUCCESS;
+        } catch (\Exception $e) {
+            $io->error('Erreur lors du chargement des fixtures : ' . $e->getMessage());
+            return Command::FAILURE;
+        }
+    }
+}
