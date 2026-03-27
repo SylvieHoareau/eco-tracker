@@ -1,38 +1,8 @@
 {% extends 'base.html.twig' %}
 
 {% block stylesheets %}
-    {{ parent() }} {# Conserve Bootstrap #}
+    {{ parent() }} {# Importe ton app.css de base [cite: 1] #}
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <style>
-        /* Conteneur de la carte : Mobile First */
-        #map { 
-            height: 50vh; /* 50% de la hauteur de l'écran sur mobile */
-            min-height: 350px;
-            width: 100%; 
-            border-radius: 12px;
-            border: 2px solid #e0e0e0;
-            z-index: 1; /* Évite les conflits avec la navbar */
-        }
-
-        /* Ajustement pour les écrans plus grands (Tablettes/PC) */
-        @media (min-width: 768px) {
-            #map { 
-                height: 70vh; /* Plus grand sur desktop */
-            }
-        }
-
-        /* Amélioration de la lisibilité des popups (Accessibilité) */
-        .leaflet-popup-content {
-            font-size: 1rem;
-            line-height: 1.5;
-            color: #2c3e50;
-        }
-        
-        /* Focus visible pour la navigation au clavier */
-        #map:focus {
-            outline: 3px solid #2ecc71;
-            outline-offset: 2px;
-        }    </style>
 {% endblock %}
 
 {% block body %}
@@ -62,6 +32,7 @@
 {% endblock %}
 
 {% block javascripts %}
+    {{ parent() }} {# Importe les scripts de base.html.twig #}
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
         // On attend que le document soit prêt

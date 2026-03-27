@@ -80,6 +80,7 @@ html[data-theme="dark"] .navbar-toggler-icon {
 .navbar {
     background-color: var(--eco-navbar-bg);
     border-bottom: 1px solid var(--eco-border);
+    z-index: 1050 !important; /* Valeur standard Bootstrap pour être au-dessus du contenu */
 }
 
 .navbar-dark {
@@ -230,6 +231,29 @@ h1, h2, h3 {
     color: white;
 }
 
+/* Conteneur de la carte : Mobile First */
+#map { 
+    height: 50vh; /* 50% de la hauteur de l'écran sur mobile */
+    min-height: 350px;
+    width: 100%; 
+    border-radius: 12px;
+    border: 2px solid #e0e0e0;
+    z-index: 1; /* Évite les conflits avec la navbar */
+}
+
+/* Amélioration de la lisibilité des popups (Accessibilité) */
+.leaflet-popup-content {
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #2c3e50;
+}
+
+/* Focus visible pour la navigation au clavier */
+#map:focus {
+    outline: 3px solid #2ecc71;
+    outline-offset: 2px;
+}  
+
 @media (max-width: 768px) {
     .btn, .form-control {
         min-height: 48px; /* Taille minimale recommandée pour le tactile */
@@ -241,6 +265,10 @@ h1, h2, h3 {
 
     .theme-toggle-btn {
         margin-left: 0.5rem;
+    }
+
+    #map { 
+        height: 70vh; /* Plus grand sur desktop */
     }
 }
 
