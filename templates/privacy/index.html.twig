@@ -1,0 +1,75 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Politique de Confidentialité - EcoTracker{% endblock %}
+
+{% block body %}
+<main class="container my-4 my-md-5" id="main-content">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-10 col-lg-8">
+            
+            <div class="card shadow-sm border-2">
+                <div class="card-body p-4 p-md-5">
+                    <h1 class="h2 card-title mb-4 text-center">Politique de Confidentialité</h1>
+                    
+                    <p class="text-muted mb-4">
+                        Dernière mise à jour : {{ "now"|date("d/m/Y") }}. Cette politique explique comment nous collectons, utilisons et protégeons vos données personnelles dans le cadre de l'utilisation d'EcoTracker.
+                    </p>
+
+                    <h2 class="h4 mb-3">1. Responsable du traitement</h2>
+                    <p>EcoTracker est géré par [Votre nom ou entité]. Contact : contact@eco-tracker.re</p>
+
+                    <h2 class="h4 mb-3">2. Données collectées</h2>
+                    <p>Nous collectons :</p>
+                    <ul>
+                        <li><strong>Données d'inscription :</strong> Nom d'utilisateur, adresse email, commune, mot de passe (haché).</li>
+                        <li><strong>Données d'utilisation :</strong> Éco-gestes (titre, quantité de CO2 économisé), date de création du compte.</li>
+                        <li><strong>Données techniques :</strong> Adresse IP, cookies de session pour la navigation sécurisée.</li>
+                    </ul>
+
+                    <h2 class="h4 mb-3">3. Finalités du traitement</h2>
+                    <p>Vos données sont utilisées pour :</p>
+                    <ul>
+                        <li>Créer et gérer votre compte utilisateur.</li>
+                        <li>Suivre et afficher vos éco-gestes sur la plateforme communautaire.</li>
+                        <li>Améliorer l'application et assurer la sécurité.</li>
+                    </ul>
+                    <p>Base légale : Votre consentement explicite lors de l'inscription (article 6.1.a du RGPD).</p>
+
+                    <h2 class="h4 mb-3">4. Partage des données</h2>
+                    <p>Vos données ne sont pas vendues. Elles peuvent être partagées avec :</p>
+                    <ul>
+                        <li>Prestataires techniques (hébergement MongoDB, si applicable).</li>
+                        <li>Autorités légales en cas d'obligation (ex. : enquête judiciaire).</li>
+                    </ul>
+
+                    <h2 class="h4 mb-3">5. Durée de conservation</h2>
+                    <p>Les données sont conservées tant que votre compte est actif. Après suppression, elles sont effacées dans les 30 jours, sauf obligations légales (3 ans maximum).</p>
+
+                    <h2 class="h4 mb-3">6. Vos droits (RGPD)</h2>
+                    <p>Vous disposez des droits suivants :</p>
+                    <ul>
+                        <li><strong>Accès :</strong> Demander une copie de vos données.</li>
+                        <li><strong>Rectification :</strong> Corriger vos informations.</li>
+                        <li><strong>Effacement :</strong> Supprimer votre compte via le profil.</li>
+                        <li><strong>Portabilité :</strong> Exporter vos données au format JSON.</li>
+                        <li><strong>Opposition :</strong> Refuser certains traitements.</li>
+                    </ul>
+                    <p>Contactez-nous pour exercer ces droits. Réponse sous 30 jours.</p>
+
+                    <h2 class="h4 mb-3">7. Sécurité</h2>
+                    <p>Nous utilisons le hachage des mots de passe, HTTPS et des mesures techniques pour protéger vos données. En cas de violation, nous vous notifierons dans les 72 heures.</p>
+
+                    <h2 class="h4 mb-3">8. Cookies</h2>
+                    <p>Nous utilisons des cookies essentiels pour les sessions. Pour les cookies non essentiels (ex. : remember_me), votre consentement est requis via la bannière.</p>
+
+                    <h2 class="h4 mb-3">9. Modifications</h2>
+                    <p>Cette politique peut être mise à jour. Vous serez informé des changements importants.</p>
+
+                    <p class="mt-4">Pour toute question, contactez-nous à contact@eco-tracker.re.</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</main>
+{% endblock %}

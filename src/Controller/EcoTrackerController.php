@@ -210,4 +210,17 @@ class EcoTrackerController extends AbstractController
             'stats_communes' => json_encode($statsCommunes)
         ]);
     }
+
+    #[Route('/privacy-policy', name: 'privacy_policy')]
+    public function privacyPolicy(): Response
+    {
+        return $this->render('privacy/index.html.twig');
+    }
+
+    #[Route('/me/export', name: 'user_export')]
+    public function exportData(): Response {
+        $user = $this->getUser();
+        $data = ['username' => $user->getUsername(), ...];
+        return new JsonResponse($data);
+    }
 }
